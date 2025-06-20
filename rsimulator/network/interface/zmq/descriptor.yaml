@@ -1,0 +1,123 @@
+# Requests
+
+SendMessageRequest:
+  payload:
+    required: [message]
+    optional: {node: null}
+  reply: [SuccessReply, ErrorReply]
+
+StartPeriodicMessageRequest:
+  payload:
+    required: [message]
+    optional: {node: null, interval: 1}
+  reply: [SuccessReply, ErrorReply]
+
+StopPeriodicMessageRequest:
+  payload:
+    required: [message]
+    optional: {node: null}
+  reply: [SuccessReply, ErrorReply]
+
+StartSocketRequest: # tbd - not necessary at the moment
+  payload:
+    required: [node]
+    optional: {}
+  reply: [SuccessReply, ErrorReply]
+
+StopSocketRequest: # tbd - not necessary at the moment
+  payload:
+    required: [node]
+    optional: {}
+  reply: [SuccessReply, ErrorReply]
+
+MessageCountRequest:
+  payload:
+    required: [message]
+    optional: {node: null}
+  reply: [MessageCountReply, ErrorReply]
+
+LastReceivedTimeRequest:
+  payload:
+    required: [message]
+    optional: {node: null}
+  reply: [LastReceivedTimeReply, ErrorReply]
+
+FetchLastReceivedRequest:
+  payload:
+    required: [message]
+    optional: {node: null, number: 1}
+  reply: [FetchLastReceivedReply, ErrorReply]
+
+UpdateDataRequest:
+  payload:
+    required: [data]  # data is a dict --> {Path (MessageName.B.C): NewData}
+    optional: {node: null, glitch: False}  # glitch=True if you want to modify glitch data
+  reply: [SuccessReply, ErrorReply]
+
+GetDataRequest:
+  payload:
+    required: [data]   # data is a list --> [Path (MessageName.B.C)]
+    optional: {node: null, glitch: False}  # glitch=True if you want to get glitch data
+  reply: [GetDataReply, ErrorReply]
+
+ResetDataRequest:
+  payload:
+    required: [node]
+    optional: {messages: []}  # If messages=[] --> reset all messages, else reset list messages
+  reply: [SuccessReply, ErrorReply]
+
+ConnectionRequest:
+  payload:
+    required: []
+    optional: {wait: False}  # if wait=True the handle wait until the connection is true and does not return if false
+  reply: [ConnectionReply, ErrorReply]
+
+RequirementStateRequest:
+  payload:
+    required: [requirement]
+    optional: {}
+  reply: [SuccessReply, ErrorReply]
+
+CloseNetworkRequest:
+  payload:
+    required: []
+    optional: {}
+  reply: [RequirementStateReply, ErrorReply]
+
+UpdateSMPropertyRequest:
+  payload:
+    required: [name, property, value]
+    optional: {}
+  reply: [SuccessReply, ErrorReply]
+
+UpdateGlobalVariable:
+  payload:
+    required: [name, value]
+    optional: {}
+  reply: [ SuccessReply, ErrorReply ]
+
+# Replies
+
+SuccessReply:
+  payload: []
+
+ErrorReply:
+  payload: [error, detail]
+
+MessageCountReply:
+  payload: [count]
+
+LastReceivedTimeReply:
+  payload: [time]
+
+FetchLastReceivedReply:
+  payload: [messages]  # list of messages
+
+GetDataReply:
+  payload: [data]  # dict --> {MessageName.B.C: value}
+
+ConnectionReply:
+  payload: [connected]  # bool
+
+RequirementStateReply:
+  payload: [state]  # state of the requirement

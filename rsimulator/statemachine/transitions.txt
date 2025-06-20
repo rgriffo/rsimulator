@@ -1,0 +1,48 @@
+"""
+
+1. DEFINIZIONE DEGLI STATI:
+ 		states = ['state_1', 'state_2', 'state_3']
+
+2. DEFINIZIONE DELLE TRANSITIONS:
+
+        trigger     | La chiave trigger definisce il nome dell'evento che deve essere chiamato per attivare la transizione
+		source      | La chiave source indica lo stato di partenza da cui la transizione avverrà. Può essere una lista di stati, per specificare più stati di partenza
+		dest        | La chiave dest indica lo stato di arrivo dove la macchina a stati deve transitare
+		conditions  | La chiave conditions specifica una funzione di condizione che deve essere verificata prima che la transizione venga eseguita. Se la condizione restituisce True, la transizione può essere eseguita. Può essere una stringa (riferimento a un metodo dell'oggetto), una lista di metodi o una funzione lambda.
+		before      | La chiave before permette di specificare un callback da eseguire prima che la transizione avvenga
+		after       | La chiave after permette di specificare un callback da eseguire dopo che la transizione avviene
+		unless      | La chiave unless specifica una condizione che, se verificata, impedisce l'esecuzione della transizione
+		prepare     | La chiave prepare permette di eseguire una funzione di preparazione prima che la transizione venga eseguita. Funziona in modo simile a before, ma viene eseguito solo se la condizione per la transizione è stata soddisfatta
+		abort       | La chiave abort permette di definire una funzione che può abortire la transizione se una certa condizione non è soddisfatta. Se l'operazione di abortimento è riuscita, la transizione non avverrà.
+
+
+	Example:
+	[{
+        'trigger': 'from_1_to_2',            --> dynamically created by machine
+        'source': 'state_1',                 --> source state
+        'dest': 'state_2',                   --> destination state
+        'conditions': 'can_go_from_1_to_2',  --> condition to go in 2 (should be implemented in the model)
+        'before': ...
+        'after':  ...
+    }]
+
+3. METODI SPECIALI DA METTERE NEL MODELLO
+
+		on_init            | Viene chiamato subito dopo che la macchina a stati è stata inizializzata.
+		on_enter           | Viene chiamato quando si entra da qualsiasi stato, non è specifico per uno stato
+		on_exit            | Viene chiamato quando si esce da qualsiasi stato, non è specifico per uno stato
+		on_enter_<status>  | Viene chiamato ogni volta che la macchina entra in uno stato specificato.
+		on_exit_<status>   | Viene chiamato ogni volta che la macchina esce dallo stato specificato.
+		on_transition      | Viene chiamato ogni volta che una transizione avviene.
+
+
+4. STATI SPECIALI
+
+	initial   | Definisce lo stato iniziale della macchina a stati
+	final     | flag che può essere utilizzato per dichiarare uno stato come finale. Quando la macchina a stati arriva a uno stato finale, non eseguirà più transizioni da quello stato.
+
+	esempio: machine.add_state('final', final=True)  # Stato finale
+	esempio: states = ['solid', 'liquid', 'gas']
+			machine = Machine(model=matter, states=states, transitions=transitions, initial='solid')
+
+"""
